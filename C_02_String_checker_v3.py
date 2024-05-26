@@ -1,31 +1,36 @@
 # Check that users have entered a valid
 # option based on a list
-def int_checker():
+def string_checker(question, valid_ans=("yes", "no")):
+    error = f"Please enter a valid option from the following list: {valid_ans}"
+
     while True:
 
-        error = "Please enter an integer that is 13 or higher"
+        # Make sure input is lowercase
+        user_response = input(question).lower()
 
-        try:
-            response = int(input("Enter an integer  "))
-            # Checks if integer is greater than or equal to 13
-            if response < 13:
-                print(error)
-            else:
-                return response
+        for item in valid_ans:
+            # check if input is on the list
+            if item == user_response:
+                return item
 
-        except ValueError:
-            print(error)
+            # Check if input is the same as first letter of an item on list
+            elif user_response == item[0]:
+                return item
+
+        # print error if input is invalid
+        print(error)
+        print()
 
 
 # Main
 
 rps_list = "rock", "paper", "scissors", "xxx"
 
-want_instructions = int_checker("Do you want to see the instructions?")
+want_instructions = string_checker("Do you want to see the instructions?")
 
 print("You chose", want_instructions)
 
-rps = int_checker("Please choose r, p or s",
+rps = string_checker("Please choose r, p or s",
                      rps_list)
 
 print("You chose", rps)

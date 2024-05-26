@@ -1,32 +1,35 @@
 # Check that users have entered a valid
 # option based on a list
-def string_checker(user_response, valid_ans):
+def int_checker(to_test):
     while True:
 
-        # Make sure input is lowercase
-        user_response = user_response.lower()
+        error = "Please enter an integer that is 13 or higher"
 
-        for item in valid_ans:
-            # check if input is on the list
-            if item == user_response:
-                return item
+        # Check for infinite mode
+        if to_test == "":
+            return "infinite"
 
-            # Check if input is the same as first letter of an item on list
-            elif user_response == item[0]:
-                return item
+        try:
+            response = int(input("Enter an integer  "))
+            # Checks if integer is greater than or equal to 13
+            if response < 13:
+                print(error)
+            else:
+                return response
 
-        return "invalid"
+        except ValueError:
+            print(error)
 
 
 # Automated testing is below in the form (test_case, expected_value)
-to_test = [
-    ("yes", "yes"),
-    ("Y", "yes"),
-    ("No", "no"),
-    ("N", "no"),
-    ("YeS", "yes"),
-    ("Maybe", "invalid"),
-]
+to_test = {
+    ('xlii', 'invalid'),
+    ('0.5', 'invalid'),
+    ('0', 'invalid'),
+    ('1', '1'),
+    ('2', '2'),
+    ('', 'infinite'),
+}
 
 # run tests!
 for item in to_test:
@@ -35,7 +38,7 @@ for item in to_test:
     expected = item[1]
 
     # get actual value (ie: test ticket function)
-    actual = string_checker(case, ["yes", "no"])
+    actual = int_checker(case)
 
     # compare actual and expected and output pass / fail
     if actual == expected:
