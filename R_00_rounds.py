@@ -1,37 +1,3 @@
-# Check that users have entered a valid
-# option based on a list
-def string_checker(question, valid_ans=("yes", "no")):
-    error = f"Please enter a valid option from the following list: {valid_ans}"
-
-    while True:
-
-        # Make sure input is lowercase
-        user_response = input(question).lower()
-
-        for item in valid_ans:
-            # check if input is on the list
-            if item == user_response:
-                return item
-
-            # Check if input is the same as first letter of an item on list
-            elif user_response == item[0]:
-                return item
-
-        # print error if input is invalid
-        print(error)
-        print()
-
-
-def instruction():
-    print('''
-**** Instructions ****
-
-Do something
-and then do something else
-etc
-    ''')
-
-
 # Checks for an integer ,more than 0 (allows <enter>)
 def int_checker(question):
     while True:
@@ -63,19 +29,9 @@ def int_checker(question):
 mode = "regular"
 rounds_played = 0
 
-rps_list = ["rock", "paper", "scissors", "xxx"]
-
-
 print("Rock Paper Scissors Game")
 print()
-
-
 # Instructions
-want_instructions = string_checker("Do you want to read the instructions?")
-if want_instructions == "yes":
-    instruction()
-print("program")
-
 
 # Ask user for number of rounds / infinite mode
 num_rounds = int_checker("How many rounds would you like? Push enter for infinite mode ")
@@ -83,7 +39,6 @@ num_rounds = int_checker("How many rounds would you like? Push enter for infinit
 if num_rounds == "infinite":
     mode = "infinite"
     num_rounds = 5
-
 
 # Game loop starts here
 while rounds_played < num_rounds:
@@ -96,9 +51,8 @@ while rounds_played < num_rounds:
 
     print(rounds_heading)
     print()
-    # get user choice
-    user_choice = string_checker("Choose: ", rps_list)
-    print("You chose ", user_choice)
+
+    user_choice = input("Choose: ")
 
     if user_choice == "xxx":
         break
@@ -108,9 +62,6 @@ while rounds_played < num_rounds:
     if mode == "infinite":
         num_rounds += 1
 
-
 # Game loop ends here
 
-
 # Game history / stats
-
