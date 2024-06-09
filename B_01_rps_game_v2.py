@@ -64,27 +64,32 @@ def int_checker(question):
 def rps_compare(user, comp):
     # If the user choice is the same as comp choice then the result is a tie
     if user == comp:
-        result = "tie"
-    # If its a win
+        round_result = "tie"
+    # If it's a win
     elif user == "paper" and comp == "rock":
-        result = "win"
+        round_result = "win"
     elif user == "rock" and comp == "scissors":
-        result = "win"
+        round_result = "win"
     elif user == "scissors" and comp == "paper":
-        result = "win"
+        round_result = "win"
     # If it's not a win, not a tie, it's a lose
     else:
-        result = "lose"
-    return result
+        round_result = "lose"
+    return round_result
 
 
 # Main Routine
 
 # Initialise game variables
 mode = "regular"
+
 rounds_played = 0
+rounds_tied = 0
+rounds_lost = 0
+rounds_won = 0
 
 rps_list = ["rock", "paper", "scissors", "xxx"]
+game_history = []
 
 print("Rock Paper Scissors Game")
 print()
@@ -124,7 +129,20 @@ while rounds_played < num_rounds:
     comp_choice = random.choice(rps_list[:-1])
 
     result = rps_compare(user_choice, comp_choice)
+
+    # Adjust game lost/tied counters and add results to game history.
+    if result == "tie":
+        rounds_tied += 1
+    elif result == "lose":
+        rounds_lost += 1
+    elif result == "win":
+        rounds_won += 1
+
+    game_history.append(f"Round {rounds_played + 1}: {user_choice} vs {comp_choice}, {result}")
+
     print(f"{user_choice} vs {comp_choice}, {result}")
+
+    print(f"Wins: {rounds_won} Ties: {rounds_tied} Losses: {rounds_lost}")
 
     rounds_played += 1
 
@@ -136,3 +154,23 @@ while rounds_played < num_rounds:
 
 
 # Game history / stats
+
+# Calculate stats
+percent_won = rounds_won / rounds_played * 100
+percent_tied = rounds_tied / rounds_played * 100
+percent_lost = 100 - percent_tied - percent_won
+
+# Game history
+
+# Print stats
+want_stats = string_checker("Do you wan to see your game stats?")
+if want_stats == "yes":
+    print("Game stats")
+    print(f"Won: {percent_won:2f}% \t"
+          f"Lost: {percent_lost:2f}% \t"
+          f"Tied: {percent_tied:2f}%")
+
+want_hist = string_checker("Do you wan to see your game stats?")
+if want_hist == "yes":
+    for item in game_history:
+        print(item)

@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 # Check that users have entered a valid
@@ -9,8 +10,8 @@ def string_checker(question, valid_ans=("yes", "no")):
     while True:
 
         # Make sure input is lowercase
-        user_response = input(question).lower()
 
+        user_response = random.choice(rps_list[:-1])
         for item in valid_ans:
             # check if input is on the list
             if item == user_response:
@@ -23,16 +24,6 @@ def string_checker(question, valid_ans=("yes", "no")):
         # print error if input is invalid
         print(error)
         print()
-
-
-def instruction():
-    print('''
-**** Instructions ****
-
-Do something
-and then do something else
-etc
-    ''')
 
 
 # Checks for an integer ,more than 0 (allows <enter>)
@@ -64,36 +55,35 @@ def int_checker(question):
 def rps_compare(user, comp):
     # If the user choice is the same as comp choice then the result is a tie
     if user == comp:
-        result = "tie"
-    # If its a win
+        round_result = "tie"
+    # If it's a win its a win
     elif user == "paper" and comp == "rock":
-        result = "win"
+        round_result = "win"
     elif user == "rock" and comp == "scissors":
-        result = "win"
+        round_result = "win"
     elif user == "scissors" and comp == "paper":
-        result = "win"
+        round_result = "win"
     # If it's not a win, not a tie, it's a lose
     else:
-        result = "lose"
-    return result
+        round_result = "lose"
+    return round_result
 
 
 # Main Routine
 
 # Initialise game variables
 mode = "regular"
+
 rounds_played = 0
+rounds_tied = 0
+rounds_lost = 0
+rounds_won = 0
 
 rps_list = ["rock", "paper", "scissors", "xxx"]
+game_history = []
 
 print("Rock Paper Scissors Game")
 print()
-
-# Instructions
-want_instructions = string_checker("Do you want to read the instructions?")
-if want_instructions == "yes":
-    instruction()
-print("program")
 
 # Ask user for number of rounds / infinite mode
 num_rounds = int_checker("How many rounds would you like? Push enter for infinite mode ")
@@ -124,7 +114,32 @@ while rounds_played < num_rounds:
     comp_choice = random.choice(rps_list[:-1])
 
     result = rps_compare(user_choice, comp_choice)
+
+    # Adjust game lost/tied counters and add results to game history.
+    if result == "tie":
+        rounds_tied += 1
+    elif result == "lose":
+        rounds_lost += 1
+    elif result == "win":
+        rounds_won += 1
+
+
+    def check_sum(rounds_lost, rounds_won, rounds_tied, rounds_played):
+        # Add the three values
+        total = rounds_lost + rounds_won + rounds_tied
+        # Check if the sum equals the target value
+        if total == rounds_played:
+            return "pass"
+        else:
+            return 'fail'
+
+
+    if check_sum == "fail":
+        print("!!!!FAIL!!!!")
+
     print(f"{user_choice} vs {comp_choice}, {result}")
+
+    print(f"Wins: {rounds_won} Ties: {rounds_tied} Losses: {rounds_lost}")
 
     rounds_played += 1
 
